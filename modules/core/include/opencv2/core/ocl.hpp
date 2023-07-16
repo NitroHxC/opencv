@@ -302,20 +302,20 @@ public:
 
     void release();
 
-    class CV_EXPORTS UserContext {
-    public:
-        virtual ~UserContext();
-    };
-    template <typename T>
-    inline void setUserContext(const std::shared_ptr<T>& userContext) {
-        setUserContext(typeid(T), userContext);
-    }
-    template <typename T>
-    inline std::shared_ptr<T> getUserContext() {
-        return std::dynamic_pointer_cast<T>(getUserContext(typeid(T)));
-    }
-    void setUserContext(std::type_index typeId, const std::shared_ptr<UserContext>& userContext);
-    std::shared_ptr<UserContext> getUserContext(std::type_index typeId);
+    // class CV_EXPORTS UserContext {
+    // public:
+    //     virtual ~UserContext();
+    // };
+    // template <typename T>
+    // inline void setUserContext(const std::shared_ptr<T>& userContext) {
+    //     setUserContext(typeid(T), userContext);
+    // }
+    // template <typename T>
+    // inline std::shared_ptr<T> getUserContext() {
+    //     return std::dynamic_pointer_cast<T>(getUserContext(typeid(T)));
+    // }
+    // void setUserContext(std::type_index typeId, const std::shared_ptr<UserContext>& userContext);
+    // std::shared_ptr<UserContext> getUserContext(std::type_index typeId);
 
     struct Impl;
     inline Impl* getImpl() const { return (Impl*)p; }

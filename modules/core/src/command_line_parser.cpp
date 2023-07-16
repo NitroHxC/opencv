@@ -119,7 +119,7 @@ static void from_str(const String& str, Param type, void* dst)
 
 void CommandLineParser::getByName(const String& name, bool space_delete, Param type, void* dst) const
 {
-    try
+    // try
     {
         for (size_t i = 0; i < impl->data.size(); i++)
         {
@@ -144,12 +144,12 @@ void CommandLineParser::getByName(const String& name, bool space_delete, Param t
             }
         }
     }
-    catch (const Exception& e)
-    {
-        impl->error = true;
-        impl->error_message = impl->error_message + "Parameter '"+ name + "': " + e.err + "\n";
-        return;
-    }
+    // catch (const Exception& e)
+    // {
+    //     impl->error = true;
+    //     impl->error_message = impl->error_message + "Parameter '"+ name + "': " + e.err + "\n";
+    //     return;
+    // }
 
     CV_Error_(Error::StsBadArg, ("undeclared key '%s' requested", name.c_str()));
 }
@@ -157,7 +157,7 @@ void CommandLineParser::getByName(const String& name, bool space_delete, Param t
 
 void CommandLineParser::getByIndex(int index, bool space_delete, Param type, void* dst) const
 {
-    try
+    // try
     {
         for (size_t i = 0; i < impl->data.size(); i++)
         {
@@ -177,12 +177,12 @@ void CommandLineParser::getByIndex(int index, bool space_delete, Param type, voi
             }
         }
     }
-    catch (const Exception& e)
-    {
-        impl->error = true;
-        impl->error_message = impl->error_message + format("Parameter #%d: ", index) + e.err + "\n";
-        return;
-    }
+    // catch (const Exception& e)
+    // {
+    //     impl->error = true;
+    //     impl->error_message = impl->error_message + format("Parameter #%d: ", index) + e.err + "\n";
+    //     return;
+    // }
 
     CV_Error_(Error::StsBadArg, ("undeclared position %d requested", index));
 }
@@ -464,16 +464,17 @@ std::vector<String> CommandLineParser::Impl::split_range_string(const String& _s
         {
             if (begin == true)
             {
-                throw cv::Exception(CV_StsParseError,
-                         String("error in split_range_string(")
-                         + str
-                         + String(", ")
-                         + String(1, fs)
-                         + String(", ")
-                         + String(1, ss)
-                         + String(")"),
-                         "", __FILE__, __LINE__
-                         );
+                // throw cv::Exception(CV_StsParseError,
+                //          String("error in split_range_string(")
+                //          + str
+                //          + String(", ")
+                //          + String(1, fs)
+                //          + String(", ")
+                //          + String(1, ss)
+                //          + String(")"),
+                //          "", __FILE__, __LINE__
+                //          );
+                return vec;
             }
             begin = true;
             word = "";
@@ -484,16 +485,17 @@ std::vector<String> CommandLineParser::Impl::split_range_string(const String& _s
         {
             if (begin == false)
             {
-                throw cv::Exception(CV_StsParseError,
-                         String("error in split_range_string(")
-                         + str
-                         + String(", ")
-                         + String(1, fs)
-                         + String(", ")
-                         + String(1, ss)
-                         + String(")"),
-                         "", __FILE__, __LINE__
-                         );
+                // throw cv::Exception(CV_StsParseError,
+                //          String("error in split_range_string(")
+                //          + str
+                //          + String(", ")
+                //          + String(1, fs)
+                //          + String(", ")
+                //          + String(1, ss)
+                //          + String(")"),
+                //          "", __FILE__, __LINE__
+                //          );
+                return vec;
             }
             begin = false;
             vec.push_back(word);
@@ -508,16 +510,17 @@ std::vector<String> CommandLineParser::Impl::split_range_string(const String& _s
 
     if (begin == true)
     {
-        throw cv::Exception(CV_StsParseError,
-                 String("error in split_range_string(")
-                 + str
-                 + String(", ")
-                 + String(1, fs)
-                 + String(", ")
-                 + String(1, ss)
-                 + String(")"),
-                 "", __FILE__, __LINE__
-                );
+        // throw cv::Exception(CV_StsParseError,
+        //          String("error in split_range_string(")
+        //          + str
+        //          + String(", ")
+        //          + String(1, fs)
+        //          + String(", ")
+        //          + String(1, ss)
+        //          + String(")"),
+        //          "", __FILE__, __LINE__
+        //         );
+        return vec;
     }
 
     return vec;

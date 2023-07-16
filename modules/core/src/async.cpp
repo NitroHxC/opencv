@@ -119,7 +119,7 @@ struct AsyncArray::Impl
             if (has_exception)
             {
                 result_is_fetched = true;
-                throw cv_exception;
+                // throw cv_exception;
             }
             CV_Error(Error::StsInternal, "AsyncArray: invalid state of 'has_result = true'");
         }

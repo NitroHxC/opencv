@@ -602,14 +602,14 @@ UMat Mat::getUMat(AccessFlag accessFlags, UMatUsageFlags usageFlags) const
         new_u->originalUMatData = u;
     }
     bool allocated = false;
-    try
+    // try
     {
         allocated = UMat::getStdAllocator()->allocate(new_u, accessFlags, usageFlags);
     }
-    catch (const cv::Exception& e)
-    {
-        fprintf(stderr, "Exception: %s\n", e.what());
-    }
+    // catch (const cv::Exception& e)
+    // {
+    //     fprintf(stderr, "Exception: %s\n", e.what());
+    // }
     if (!allocated)
     {
         allocated = getDefaultAllocator()->allocate(new_u, accessFlags, usageFlags);
@@ -626,7 +626,7 @@ UMat Mat::getUMat(AccessFlag accessFlags, UMatUsageFlags usageFlags) const
         CV_XADD(&(u->refcount), 1);
         CV_XADD(&(u->urefcount), 1);
     }
-    try
+    // try
     {
         hdr.flags = flags;
         hdr.usageFlags = usageFlags;
@@ -637,16 +637,16 @@ UMat Mat::getUMat(AccessFlag accessFlags, UMatUsageFlags usageFlags) const
         hdr.addref();
         return hdr;
     }
-    catch(...)
-    {
-        if (u != NULL)
-        {
-            CV_XADD(&(u->refcount), -1);
-            CV_XADD(&(u->urefcount), -1);
-        }
-        new_u->currAllocator->deallocate(new_u);
-        throw;
-    }
+    // catch(...)
+    // {
+    //     if (u != NULL)
+    //     {
+    //         CV_XADD(&(u->refcount), -1);
+    //         CV_XADD(&(u->urefcount), -1);
+    //     }
+    //     new_u->currAllocator->deallocate(new_u);
+    //     throw;
+    // }
 
 }
 
@@ -698,17 +698,17 @@ void UMat::create(int d, const int* _sizes, int _type, UMatUsageFlags _usageFlag
             a = a0;
             a0 = Mat::getDefaultAllocator();
         }
-        try
+        // try
         {
             u = a->allocate(dims, size, _type, 0, step.p, ACCESS_RW /* ignored */, usageFlags);
             CV_Assert(u != 0);
         }
-        catch(...)
-        {
-            if(a != a0)
-                u = a0->allocate(dims, size, _type, 0, step.p, ACCESS_RW /* ignored */, usageFlags);
-            CV_Assert(u != 0);
-        }
+        // catch(...)
+        // {
+        //     if(a != a0)
+        //         u = a0->allocate(dims, size, _type, 0, step.p, ACCESS_RW /* ignored */, usageFlags);
+        //     CV_Assert(u != 0);
+        // }
         CV_Assert( step[dims-1] == (size_t)CV_ELEM_SIZE(flags) );
     }
 
@@ -1075,7 +1075,7 @@ Mat UMat::getMat(AccessFlag accessFlags) const
     // TODO Support ACCESS_READ (ACCESS_WRITE) without unnecessary data transfers
     accessFlags |= ACCESS_RW;
     UMatDataAutoLock autolock(u);
-    try
+    // try
     {
         if(CV_XADD(&u->refcount, 1) == 0)
             u->currAllocator->map(u, accessFlags);
@@ -1090,11 +1090,11 @@ Mat UMat::getMat(AccessFlag accessFlags) const
             return hdr;
         }
     }
-    catch(...)
-    {
-        CV_XADD(&u->refcount, -1);
-        throw;
-    }
+    // catch(...)
+    // {
+    //     CV_XADD(&u->refcount, -1);
+    //     throw;
+    // }
     CV_XADD(&u->refcount, -1);
     CV_Assert(u->data != 0 && "Error mapping of UMat to host memory.");
     return Mat();

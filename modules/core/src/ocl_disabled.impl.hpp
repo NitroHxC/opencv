@@ -177,10 +177,10 @@ void* Context::getOpenCLContextProperty(int /*propertyId*/) const { OCL_NOT_AVAI
 bool Context::useSVM() const { return false; }
 void Context::setUseSVM(bool enabled) { }
 
-Context::UserContext::~UserContext() { }
+// Context::UserContext::~UserContext() { }
 
-void Context::setUserContext(std::type_index /*typeId*/, const std::shared_ptr<Context::UserContext>& /*userContext*/) { OCL_NOT_AVAILABLE(); }
-std::shared_ptr<Context::UserContext> Context::getUserContext(std::type_index /*typeId*/) { OCL_NOT_AVAILABLE(); }
+// void Context::setUserContext(std::type_index /*typeId*/, const std::shared_ptr<Context::UserContext>& /*userContext*/) { OCL_NOT_AVAILABLE(); }
+// std::shared_ptr<Context::UserContext> Context::getUserContext(std::type_index /*typeId*/) { OCL_NOT_AVAILABLE(); }
 
 /* static */ Context Context::fromHandle(void* context) { OCL_NOT_AVAILABLE(); }
 /* static */ Context Context::fromDevice(const ocl::Device& device) { OCL_NOT_AVAILABLE(); }

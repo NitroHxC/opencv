@@ -1240,7 +1240,7 @@ void error( const Exception& exc )
         *p = 0;
     }
 
-    throw exc;
+    // throw exc;
 #ifdef __GNUC__
 # if !defined __clang__ && !defined __APPLE__
     // this suppresses this warning: "noreturn" function does return [enabled by default]
@@ -2046,15 +2046,15 @@ void* TLSDataContainer::getData() const
     {
         // Create new data instance and save it to TLS storage
         pData = createDataInstance();
-        try
+        // try
         {
             getTlsStorage().setData(key_, pData);
         }
-        catch (...)
-        {
-            deleteDataInstance(pData);
-            throw;
-        }
+        // catch (...)
+        // {
+        //     deleteDataInstance(pData);
+        //     throw;
+        // }
     }
     return pData;
 }
@@ -2158,7 +2158,7 @@ inline bool parseOption(const std::string & value)
     {
         return false;
     }
-    throw ParseError(value);
+    return false; // throw ParseError(value);
 }
 
 template<>
@@ -2179,7 +2179,7 @@ inline size_t parseOption(const std::string &value)
         return v * 1024 * 1024;
     else if (suffixStr == "KB" || suffixStr == "Kb" || suffixStr == "kb")
         return v * 1024;
-    throw ParseError(value);
+    return v; // throw ParseError(value);
 }
 
 template<>
@@ -2222,16 +2222,16 @@ static inline const char * envRead(const char * name)
 template<typename T>
 inline T read(const std::string & k, const T & defaultValue)
 {
-    try
+    // try
     {
         const char * res = envRead(k.c_str());
         if (res)
             return parseOption<T>(std::string(res));
     }
-    catch (const ParseError &err)
-    {
-        CV_Error(cv::Error::StsBadArg, err.toString(k));
-    }
+    // catch (const ParseError &err)
+    // {
+    //     CV_Error(cv::Error::StsBadArg, err.toString(k));
+    // }
     return defaultValue;
 }
 

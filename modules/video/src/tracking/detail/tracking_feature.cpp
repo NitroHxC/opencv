@@ -107,15 +107,15 @@ void CvHaarEvaluator::generateFeatures(int nFeatures)
 
 CvHaarEvaluator::FeatureHaar::FeatureHaar(Size patchSize)
 {
-    try
+    // try
     {
         generateRandomFeature(patchSize);
     }
-    catch (...)
-    {
-        // FIXIT
-        throw;
-    }
+    // catch (...)
+    // {
+    //     // FIXIT
+    //     throw;
+    // }
 }
 
 void CvHaarEvaluator::FeatureHaar::generateRandomFeature(Size patchSize)
