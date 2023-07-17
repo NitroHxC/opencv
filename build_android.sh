@@ -29,62 +29,50 @@ iOS_SDK_Min_Version="8.0"
 
 ## Dynamic or Static library output
 ## ON = *.so ; OFF = *.a
-SET_SHARED=ON
+SET_SHARED=OFF
 
 echo ""
 echo "=== BUILD TARGET (Android) ==="
 echo ""
 echo "PWD: ${PWD}"
 
+rm -rf CMakeCache.txt
+
 for i in "${AndroidArchitectures[@]}"
-    do
-        echo "Build for $i:"
+do
+    echo "Build for $i:"
 
-        ABI_Folder_Name=$i
+    ABI_Folder_Name=$i
 
-        if [ $i == "arm" ]
-        then
-            ABI_Folder_Name="armeabi-v7a"
-        elif [ $i == "arm64" ]
-        then
-            ABI_Folder_Name="arm64-v8a"
-        fi
+    if [ $i == "arm" ]
+    then
+        ABI_Folder_Name="armeabi-v7a"
+    elif [ $i == "arm64" ]
+    then
+        ABI_Folder_Name="arm64-v8a"
+    fi
 
-        # Temp build folder
-        rm -rf _build_android_$ABI_Folder_Name-$ANDROID_NATIVE_API_LEVEL 
-        rm -rf CMakeCache.txt
-        mkdir -p _build_android_$ABI_Folder_Name-$ANDROID_NATIVE_API_LEVEL 
-        cd _build_android_$ABI_Folder_Name-$ANDROID_NATIVE_API_LEVEL 
+    # Temp build folder
+    rm -rf _build_android_$ABI_Folder_Name-$ANDROID_NATIVE_API_LEVEL 
 
-        echo "PWD: ${PWD}"
-        
-        cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_USE_LEGACY_TOOLCHAIN_FILE=False \
-                -DANDROID_ABI=${ABI_Folder_Name} -DANDROID_ARM_NEON=ON -DANDROID_PLATFORM=android-33 -DANDROID_CPP_FEATURES="no-rtti no-exceptions" \
-                -DCMAKE_INSTALL_PREFIX=install -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=${SET_SHARED} `cat ../opencv4_cmake_options.txt` -DBUILD_opencv_world=OFF -DOPENCV_DISABLE_FILESYSTEM_SUPPORT=ON ..
+    mkdir -p _build_android_$ABI_Folder_Name-$ANDROID_NATIVE_API_LEVEL 
+    cd _build_android_$ABI_Folder_Name-$ANDROID_NATIVE_API_LEVEL 
 
-        make -j20
+    echo "PWD: ${PWD}"
+    
+    cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DENABLE_PIC=TRUE -DANDROID_USE_LEGACY_TOOLCHAIN_FILE=False \
+            -DANDROID_STL=c++_static -DANDROID_ABI=${ABI_Folder_Name} -DANDROID_ARM_NEON=ON -DANDROID_PLATFORM=android-33 -DANDROID_CPP_FEATURES="no-rtti no-exceptions" \
+            -DCMAKE_INSTALL_PREFIX=install -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=${SET_SHARED} `cat ../opencv4_cmake_options.txt` -DBUILD_opencv_world=OFF -DOPENCV_DISABLE_FILESYSTEM_SUPPORT=ON ..
 
-        echo "Copying /lib/$ABI_Folder_Name to ../$output_folder"
-        cp -R lib/$ABI_Folder_Name ../$output_folder
+    make -j20
 
-        cd ..
+    echo "Copying /lib/$ABI_Folder_Name to ../$output_folder"
+    cp -R lib/$ABI_Folder_Name ../$output_folder
 
-        echo "PWD: ${PWD}"
+    cd ..
 
-    done
+    echo "PWD: ${PWD}"
+done
 
 echo "** BUILD SUCCEEDED (Android) **"
 echo ""     
-
-        
-
-# cmake -D CMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
-#       -D ANDROID_NDK=${ANDROID_NDK} \
-#       -D ANDROID_NATIVE_API_LEVEL=${ANDROID_NATIVE_API_LEVEL} \
-#       -D ANDROID_ABI="armeabi-v7a with NEON" \
-#       -D BUILD_SHARED_LIBS=ON \
-#       -D BUILD_LIST=core,imgproc \
-#       ..
-
-# make install
-# make clean
