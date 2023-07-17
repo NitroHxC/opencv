@@ -55,6 +55,8 @@ for i in "${AndroidArchitectures[@]}"
         rm -rf CMakeCache.txt
         mkdir -p _build_android_$ABI_Folder_Name-$ANDROID_NATIVE_API_LEVEL 
         cd _build_android_$ABI_Folder_Name-$ANDROID_NATIVE_API_LEVEL 
+
+        echo "PWD: ${PWD}"
         
         cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake -DANDROID_USE_LEGACY_TOOLCHAIN_FILE=False \
                 -DANDROID_ABI=${ABI_Folder_Name} -DANDROID_ARM_NEON=ON -DANDROID_PLATFORM=android-33 -DANDROID_CPP_FEATURES="no-rtti no-exceptions" \
@@ -65,9 +67,12 @@ for i in "${AndroidArchitectures[@]}"
         echo "Copying /lib/$ABI_Folder_Name to ../$output_folder"
         cp -R lib/$ABI_Folder_Name ../$output_folder
 
+        cd ..
+
+        echo "PWD: ${PWD}"
+
     done
 
-cd ..
 echo "** BUILD SUCCEEDED (Android) **"
 echo ""     
 
